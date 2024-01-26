@@ -115,7 +115,7 @@
 			font-family: bahnschrift, Helvetica, Sans-Serif;
 			font-weight: 400;
 			font-size: 18px;
-			text-align: right;			
+			text-align: right;
 		}
 
 		input {
@@ -149,7 +149,6 @@
 		.gpmStuff {
 			flex: 1;
 			flex-direction: column;
-			width: 750px;
 		}
 		
 		#basinStuff {
@@ -405,11 +404,9 @@
 			font-family: bahnschrift;
 			-webkit-border-radius: 0px;
 			}
-			
 		option {
 		-webkit-border-radius: 0px;
 		}
-		
 		select:focus {
 					outline: 3px solid rgba(191, 222, 255, 0.8);
 					}
@@ -475,26 +472,26 @@
 			<div id='fixturesToChoose'>
 
 		<label for="brGroup">Bathroom Group</label>
-		<input class='fixture' type="number" id="brGroup" name="brGroup" value='0'>
+		<input class='fixture' min='0' type="number" id="brGroup" name="brGroup" value='0'>
 		
 		<label for="unlisted1">Unlisted Fixture, 1-1/4" Trap</label>
-		<input class='fixture' type="number" id="unlisted1" name="unlisted1" value='0'>
+		<input class='fixture' min='0' type="number" id="unlisted1" name="unlisted1" value='0'>
 
 
 		<label for="unlisted2">Unlisted Fixture, 1-1/2" Trap</label>
-		<input class='fixture' type="number" id="unlisted2" name="unlisted2" value='0'>
+		<input class='fixture' min='0' type="number" id="unlisted2" name="unlisted2" value='0'>
 
 
 		<label for="unlisted3">Unlisted Fixture, 2" Trap</label>
-		<input class='fixture' type="number" id="unlisted3" name="unlisted3" value='0'>
+		<input class='fixture' min='0' type="number" id="unlisted3" name="unlisted3" value='0'>
 
 
 		<label for="unlisted4">Unlisted Fixture, 2-1/2" Trap</label>
-		<input class='fixture' type="number" id="unlisted4" name="unlisted4" value='0'>
+		<input class='fixture' min='0' type="number" id="unlisted4" name="unlisted4" value='0'>
 
 
 		<label for="unlisted5">Unlisted Fixture, 3" Trap</label>
-		<input class='fixture' type="number" id="unlisted5" name="unlisted5" value='0'>
+		<input class='fixture' min='0' type="number" id="unlisted5" name="unlisted5" value='0'>
 		
 		</div>
 		<br>
@@ -528,32 +525,32 @@
 			
 	
 			<label for="StraightPipe">Straight Pipe (ft):</label>
-			<input class='fittings' type="number" id="StraightPipe" name="StraightPipe" value='0'>
+			<input class='fittings' min='0' type="number" id="StraightPipe" name="StraightPipe" value='0'>
 			
 			<label for="StaticHead">Static Head (ft):</label>
-			<input class='fittings' type="number" id="StaticHead" name="StaticHead" value='0'>
+			<input class='fittings' min='0'  type="number" id="StaticHead" name="StaticHead" value='0'>
     	</div>
 			<div id='fittingsDiv'>Fittings from pump to Discharge in Selected size</div>
 		<div id='fittingsOutPuts2'>
 			<label for='90Elbow'>Number of 90 deg Elbows: </label>
-			<input  class='fittings' type='number' id='90Elbow' name='90Elbow' value=0>
+			<input  class='fittings' min='0' type='number' id='90Elbow' name='90Elbow' value=0>
 
 			<label for='45Elbow'>Number of 45 deg Elbows: </label>
-			<input  class='fittings' type='number' id='45Elbow' name='45Elbow' value=0>
+			<input  class='fittings'min='0'  type='number' id='45Elbow' name='45Elbow' value=0>
 
   	
 			<label for='teeThru'>Number of Tees (through flow): </label>
-			<input  class='fittings' type='number' id='teeThru' name='teeThru' value=0>
+			<input  class='fittings'min='0'  type='number' id='teeThru' name='teeThru' value=0>
 
   	  
 			<label for='teeBranch'>Number of Tees (branch flow): </label>
-			<input  class='fittings' type='number' id='teeBranch' name='teeBranch' value=0> 
+			<input  class='fittings' min='0' type='number' id='teeBranch' name='teeBranch' value=0> 
   	  
 			<label for='swingCheck'>Number of swing check valves: </label>
-			<input class='fittings'  type='number' id='swingCheck' name='swingCheck' value=0>
+			<input class='fittings' min='0'  type='number' id='swingCheck' name='swingCheck' value=0>
 
 			<label for='gateValve'>Number of Gate Valves: </label>
-			<input class='fittings'  type='number' id='gateValve' name='gateValve' value=0>
+			<input class='fittings'  min='0' type='number' id='gateValve' name='gateValve' value=0>
 			</div>
 
 	<br>
