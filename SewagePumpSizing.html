@@ -16,10 +16,7 @@
 	@font-face {
 		font-family: OpenSans-Regular;
 		src: url('Fonts/OpenSans-Regular.ttf') format('truetype');
-    }
-	
-	
-       
+    }   
         body, html {
             height: 100%; /* Ensure full height */
             margin: 0;
@@ -294,6 +291,14 @@
 			text-align: right;
         }
 		
+		#scouringNote {
+			flex: 1;
+			margin-left: auto;
+			margin-right: auto;
+			color: red;
+			font-size: 17px;
+		}
+		
 		.hidden {
 			display: none;
 		}
@@ -499,6 +504,7 @@
 			flex: 1;
 			justify-self: center;
 			}
+
 	
     </style>
 </head>
@@ -652,6 +658,8 @@
 		</div>
 		
 		<div id='gpmStuff' class='gpmStuff hidden'>
+				<div id='scouringNote' class='hidden'>*NOTE: SCOURING VELOCITY REQUIRES <span id='scouring'>21</span> GPM</div>
+				<br>
 				<div id='gpmOutput'>	<label for='gpmValue'>Required Capacity (GPM)</label><input id='gpmValue' name='gpmValue'></input></div>
 		<div id='fittingsOutPuts'>
 
@@ -767,6 +775,23 @@
     </div>
 <script src="plotly.js"></script>
 <script>
+document.getElementById('fixtureButton').addEventListener('click', function() {
+	document.getElementById('fixtureSelector').classList.remove('hidden');
+	document.getElementById('gpmStuff').classList.add('hidden');
+	document.getElementById('TDHButton').classList.add('hidden');
+	document.getElementById('TDHButton').classList.remove('status-button');
+	document.getElementById('basinSizeButton').classList.add('hidden');
+	document.getElementById('basinSizeButton').classList.remove('status-button');
+	document.getElementById('basinStuff').classList.add('hidden');
+	document.getElementById('graphContainer').classList.add('hidden');
+	});
+document.getElementById('TDHButton').addEventListener('click', function() {
+	document.getElementById('gpmStuff').classList.remove('hidden');
+	document.getElementById('graphContainer').classList.add('hidden');
+	document.getElementById('basinStuff').classList.add('hidden');
+	document.getElementById('basinSizeButton').classList.add('hidden');
+	document.getElementById('basinSizeButton').classList.remove('status-button');
+	});
 
 	document.getElementById('startButton').addEventListener('click', function()  {
 	//document.getElementById('continue').style.display = 'block';
@@ -783,6 +808,29 @@
 	
 document.getElementById('toGPM').addEventListener('click', function() {
 fixtureUnits();
+nompipe = document.getElementById('nomPipe').value;
+	switch (nompipe) {
+		case '2':
+
+		scouringVel = 21;
+		break;
+		case '2.5':
+
+		scouringVel = 30
+		break;
+		case '3':
+
+		scouringVel = 46
+		}
+		if (recommendedGPM < scouringVel) {
+		document.getElementById('scouringNote').classList.remove('hidden');
+		document.getElementById('scouring').textContent = ' ' + scouringVel + ' ';
+		document.getElementById('gpmValue').style.border = '3px solid red';
+		} else {
+		document.getElementById('scouringNote').classList.add('hidden');
+		document.getElementById('gpmValue').style.border = '0px solid red';
+		}
+
 	//document.getElementById('GPM').classList.remove('hidden');
 	recommendedGPM = (1.851732392 * Math.pow(totalUnits, .6884906927))
 	recommendedGPM10 = Math.round((1.851732392 * Math.pow(totalUnits, .6884906927))/10)*10;
@@ -1032,6 +1080,7 @@ nompipe = document.getElementById('nomPipe').value;
 		teeBranchPipe = 10.3 * teeBranch;
 		swingCheck = 17.2 * swingCheck;
 		gateValvePipe = 1.4 * gateValve;
+		scouringVel = 21;
 		break;
 		case '2.5':
 		el90Pipe = el90 * 6.2;
@@ -1040,6 +1089,7 @@ nompipe = document.getElementById('nomPipe').value;
 		teeBranchPipe = 12.3 * teeBranch;
 		swingCheck = 20.6 * swingCheck;
 		gateValvePipe = 1.7 * gateValve;
+		scouringVel = 30
 		break;
 		case '3':
 		el90Pipe = el90 * 7.7;
@@ -1048,6 +1098,7 @@ nompipe = document.getElementById('nomPipe').value;
 		teeBranchPipe = 15.3 * teeBranch;
 		swingCheck = 25.5 * swingCheck;
 		gateValvePipe = 2.0 * gateValve;
+		scouringVel = 46
 		}
 if (nompipe === '2') {
 	pipeID = 1.939;
@@ -1066,7 +1117,15 @@ if (nompipe === '3') {
 	tdhResult = +staticHead + +headLoss;
 	//document.getElementById('headLossResult').innerHTML = Math.round(headLoss);
 	document.getElementById('tdhResult').innerHTML = Math.round(tdhResult);
-
+	
+	if (recommendedGPM < scouringVel) {
+		document.getElementById('scouringNote').classList.remove('hidden');
+		document.getElementById('scouring').textContent = ' ' + scouringVel + ' ';
+		document.getElementById('gpmValue').style.border = '3px solid red';
+		} else {
+		document.getElementById('scouringNote').classList.add('hidden');
+		document.getElementById('gpmValue').style.border = '0px solid red';
+		}
 	});
 	});
 /*document.getElementById('fixture').addEventListener('click', function() {
