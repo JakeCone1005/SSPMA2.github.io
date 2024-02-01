@@ -147,6 +147,7 @@
 		}
 		
 		.gpmStuff {
+			display: flex;
 			flex: 1;
 			flex-direction: column;
 		}
@@ -175,6 +176,14 @@
 			width: 100%;
 			align-self: flex-start;
 			padding-bottom:20px;
+		}
+		
+		#resultsDiv {
+			color: #545454;
+			text-align: left;
+			font-family: bahnschrift;
+			font-size:16px;
+			font-weight: 500;
 		}
 		
 		.continue {
@@ -294,10 +303,15 @@
 		}
 		
 		#fixturesToChoose {
-			display: grid;
+			display: flex;
+			flex-wrap: wrap;
 			grid-template-columns: auto auto auto auto;
+			justify-content: center;
+			align-content: flex-start;
 			padding: 20px;
-			align-items: center;
+		
+			max-width: 1100px;
+			min-width: 740px;
 			
 		}
 		
@@ -308,7 +322,7 @@
 		#fittingsOutPuts {
 			display: grid;
 			justify-items: right;
-			grid-template-columns: auto auto;
+			grid-template-columns: auto auto auto auto;
 			space-between: 30px;
 			margin-bottom: 30px;
 		}
@@ -320,20 +334,26 @@
 		#fittingsOutPuts > label {
 			padding-right: 25px;
 			}
-
+		.flexBoxEl {
+			min-width: 350px;
+			justify-self: right;
+			flex-basis: 0;
+			flex-grow: 1;
+			text-align: right;
+			}
 			
 		#fittingsDiv {
-			border-top: 1px solid #afafaeff;
+			border-top: 2px solid #afafaeff;
 			display: block;
-			width: 100%
-			margin-left: -15vw;
-			margin-left: 0;
+			width: 100%	
+			margin-left: 0px;
 			margin-right:0;
 			text-align: center;
 			margin-top: 15px;
 			margin-bottom: 15px;
-			font-weight: 800;
+			font-weight: 400;
 			font-size: 20px;
+			padding-top: 10px;
 		}
 		
 		.button-row {
@@ -423,12 +443,63 @@
 			padding-left: 10px;
 			}
 		.recommendedBasins {
+			display: inline-block;
+			flex-direction: column;
 			font-weight: 800;
 			font-size: 20px;
 			}
 		.recommendedBasins > div {
 			text-align: center;
 			}
+		#recommendedBasins {
+			text-align: center;
+			}
+		#graphContainer {
+			width: 100%;
+			}
+			
+	
+		table {
+			margin: 0 auto;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+			margin-top: 100px;
+			width: 150px;
+			text-align: center;
+			font-family: bahnschrift;
+			font-size:11px;
+			font-weight: 300;			
+        }
+
+        td {
+			padding: 5px;
+			font-size: 14px;
+			border: 1px solid #9C9C9C;
+			color: #696969;
+		}
+
+		th {
+			border: 1px solid #9C9C9C;
+			padding: 5px;
+			font-size: 14px;
+			font-weight: 400;
+			background-color:#F3F3F3;
+			color: #545454;
+
+		}
+		
+		tbody tr:nth-child(even) {
+			background-color: #E6E6E6;
+		}
+		#gpmOutput {
+			display: flex;
+			margin-left: auto;
+			margin-right: auto;
+			margin-bottom: 25px;
+			flex: 1;
+			justify-self: center;
+			}
+	
     </style>
 </head>
 
@@ -445,7 +516,7 @@
     <div class="nav-bar">
    
 			<div class="navbar-right">
-				<a href="#">Print</a>
+				<a id='printButton' href="#">Print</a>
 				<a href="#">Help</a>
 			</div>
 	</div>
@@ -461,38 +532,115 @@
 		</div>
 		</div>
 
-	<div class='container'>
+	<div id='mainContainer' class='container'>
 		<div id='startContainer'>
 			<div id="start">Sewage Pump<br>Sizing Calculator</div>
 			<button style="width:200px" id='startButton'>Start Sizing</button>
 	</div>
 		
 		<div id='fixtureSelector' class='hidden fixtureUnitSelect'>
-		<div class='calculation' id='instructions' style ="font-size:20px"><b>Select Number of Fixtures to Determine Pump Capacity GPM</b></div>
+		<div class='calculation' id='instructions' style ="font-size:20px"><b><span style="color:red">*</span>Select Number of Fixtures to Determine Pump Capacity GPM</b></div>
 			<div id='fixturesToChoose'>
-
+			<div class='flexBoxEl'>
+		<label for="bathtub1">Bathtub, 1 1/2" Trap</label>
+		<input class='fixture' min='0' type="number" id="bathtub1" name="bathtub1" value='0'>
+		</div>
+		<div class='flexBoxEl'>		
+		<label for="bathtub2">Bathtub, 2" Trap</label>
+		<input class='fixture' min='0' type="number" id="bathtub2" name="bathtub2" value='0'>
+		</div>
+		<div class='flexBoxEl'>		
+		<label for="bidet">Bidet, 1 1/2" Trap</label>
+		<input class='fixture' min='0' type="number" id="bidet" name="bidet" value='0'>
+		</div>
+		<div class='flexBoxEl'>		
+		<label for="fountain">Drinking Fountain</label>
+		<input class='fixture' min='0' type="number" id="fountain" name="fountain" value='0'>
+		</div>
+		<div class='flexBoxEl'>		
+		<label for="dwasher">Dish Washer</label>
+		<input class='fixture' min='0' type="number" id="dwasher" name="dwasher" value='0'>
+		</div>
+		<div class='flexBoxEl'>		
+		<label for="ksink">Kitchen Sink</label>
+		<input class='fixture' min='0' type="number" id="ksink" name="ksink" value='0'>
+		</div>
+		<div class='flexBoxEl'>		
+		<label for="ksinkdisp">Kitchen Sink w/ Disposal</label>
+		<input class='fixture' min='0' type="number" id="ksinkdisp" name="ksinkdisp" value='0'>
+		</div>
+		<div class='flexBoxEl'>		
+		<label for="lav">Lavatory</label>
+		<input class='fixture' min='0' type="number" id="lav" name="lav" value='0'>
+		</div>
+		<div class='flexBoxEl'>		
+		<label for="ltray">Laundry Tray</label>
+		<input class='fixture' min='0' type="number" id="ltray" name="ltray" value='0'>
+		</div>
+		<div class='flexBoxEl'>		
+		<label for="shower">Shower</label>
+		<input class='fixture' min='0' type="number" id="shower" name="shower" value='0'>
+		</div>
+		<div class='flexBoxEl'>		
+		<label for="shGroup">Shower Group</label>
+		<input class='fixture' min='0' type="number" id="shGroup" name="shGroup" value='0'>
+		</div>
+		<div class='flexBoxEl'>		
+		<label for="sinkServ">Sink, Service Type</label>
+		<input class='fixture' min='0' type="number" id="sinkServ" name="sinkServ" value='0'>
+		</div>
+		<div class='flexBoxEl'>		
+		<label for="sinkScul">Sink, Scullery</label>
+		<input class='fixture' min='0' type="number" id="sinkScul" name="sinkScul" value='0'>
+		</div>
+		<div class='flexBoxEl'>
+		<label for="sinkSurg">Sink, Surgeons</label>
+		<input class='fixture' min='0' type="number" id="sinkSurg" name="sinkSurg" value='0'>
+		</div>
+		<div class='flexBoxEl'>
+		<label for="swim">Swimming Pool (per 1000 GAL)</label>
+		<input class='fixture' min='0' type="number" id="swim" name="swim" value='0'>
+		</div>
+		<div class='flexBoxEl'>
+		<label for="urinal">Urinal</label>
+		<input class='fixture' min='0' type="number" id="urinal" name="urinal" value='0'>
+		</div>
+		<div class='flexBoxEl'>				
+		<label for="washing">Washing Machine</label>
+		<input class='fixture' min='0' type="number" id="washing" name="washing" value='0'>
+		</div>
+		<div class='flexBoxEl'>		
+		<label for="waterCloset">Water Closet</label>
+		<input class='fixture' min='0' type="number" id="waterCloset" name="waterCloset" value='0'>
+		</div>
+		<div class='flexBoxEl'>		
+		<label for="waterSoft">Water Softener</label>
+		<input class='fixture' min='0' type="number" id="waterSoft" name="waterSoft" value='0'>
+		</div>
+		<div class='flexBoxEl'>		
 		<label for="brGroup">Bathroom Group</label>
 		<input class='fixture' min='0' type="number" id="brGroup" name="brGroup" value='0'>
-		
+		</div>
+		<div class='flexBoxEl'>
 		<label for="unlisted1">Unlisted Fixture, 1-1/4" Trap</label>
 		<input class='fixture' min='0' type="number" id="unlisted1" name="unlisted1" value='0'>
-
-
+		</div>
+		<div class='flexBoxEl'>
 		<label for="unlisted2">Unlisted Fixture, 1-1/2" Trap</label>
 		<input class='fixture' min='0' type="number" id="unlisted2" name="unlisted2" value='0'>
-
-
+		</div>
+		<div class='flexBoxEl'>
 		<label for="unlisted3">Unlisted Fixture, 2" Trap</label>
 		<input class='fixture' min='0' type="number" id="unlisted3" name="unlisted3" value='0'>
-
-
+		</div>
+		<div class='flexBoxEl'>
 		<label for="unlisted4">Unlisted Fixture, 2-1/2" Trap</label>
 		<input class='fixture' min='0' type="number" id="unlisted4" name="unlisted4" value='0'>
-
-
+		</div>
+		<div class='flexBoxEl'>
 		<label for="unlisted5">Unlisted Fixture, 3" Trap</label>
 		<input class='fixture' min='0' type="number" id="unlisted5" name="unlisted5" value='0'>
-		
+		</div>
 		</div>
 		<br>
 		
@@ -504,70 +652,100 @@
 		</div>
 		
 		<div id='gpmStuff' class='gpmStuff hidden'>
-		
+				<div id='gpmOutput'>	<label for='gpmValue'>Required Capacity (GPM)</label><input id='gpmValue' name='gpmValue'></input></div>
 		<div id='fittingsOutPuts'>
-			<label for='gpmValue'>GPM</label><input id='gpmValue' name='gpmValue'></input>
+
 		
 			<label for='nomPipe'>Nominal Pipe Size</label>
-			<select class='fittings' id="nomPipe" name="nomPipe">
-				<option id='2inch' selected value="2">2"</option>
-				<option id='2.5inch' value="2.5">2-1/2"</option>
-				<option id='3inch' value="3">3"</option>
-			</select>
-			
-			
-		<label for='matPipe'>Pipe Material</label>
-			<select class='fittings'  id="matPipe" name="matPipe">
-				<option selected value="PVC">PVC</option>
-				<option value="Steel">Steel</option>
-			</select>
-			
-			
-	
-			<label for="StraightPipe">Straight Pipe (ft):</label>
-			<input class='fittings' min='0' type="number" id="StraightPipe" name="StraightPipe" value='0'>
-			
-			<label for="StaticHead">Static Head (ft):</label>
-			<input class='fittings' min='0'  type="number" id="StaticHead" name="StaticHead" value='0'>
-    	</div>
-			<div id='fittingsDiv'>Fittings from pump to Discharge in Selected size</div>
-		<div id='fittingsOutPuts2'>
-			<label for='90Elbow'>Number of 90 deg Elbows: </label>
-			<input  class='fittings' min='0' type='number' id='90Elbow' name='90Elbow' value=0>
+				<select class='fittings' id="nomPipe" name="nomPipe">
+					<option id='2inch' selected value="2">2"</option>
+					<option id='2.5inch' value="2.5">2-1/2"</option>
+					<option id='3inch' value="3">3"</option>
+				</select>
+				
 
-			<label for='45Elbow'>Number of 45 deg Elbows: </label>
-			<input  class='fittings'min='0'  type='number' id='45Elbow' name='45Elbow' value=0>
+			
+			<label for="StraightPipe"><span style="color:red">*</span>Straight Pipe (ft):</label>
+				<input class='fittings' min='0' type="number" id="StraightPipe" name="StraightPipe" value='0'>
+						<label for='matPipe'>Pipe Material</label>
+				<select class='fittings'  id="matPipe" name="matPipe">
+					<option selected value="PVC">PVC</option>
+					<option value="Steel">Steel</option>
+				</select>
+			<label for="StaticHead">Static Head (ft):</label>
+				<input class='fittings' min='0'  type="number" id="StaticHead" name="StaticHead" value='0'>
+    	</div>
+		
+		
+		<div id='fittingsDiv'>Fittings from pump to Discharge in Selected size</div>
+			<div id='fittingsOutPuts2'>
+			
+				<label for='90Elbow'>Number of 90 deg Elbows: </label>
+					<input  class='fittings' min='0' type='number' id='90Elbow' name='90Elbow' value=0>
+
+				<label for='45Elbow'>Number of 45 deg Elbows: </label>
+					<input  class='fittings'min='0'  type='number' id='45Elbow' name='45Elbow' value=0>
 
   	
-			<label for='teeThru'>Number of Tees (through flow): </label>
-			<input  class='fittings'min='0'  type='number' id='teeThru' name='teeThru' value=0>
+				<label for='teeThru'>Number of Tees (through flow): </label>
+					<input  class='fittings'min='0'  type='number' id='teeThru' name='teeThru' value=0>
 
   	  
-			<label for='teeBranch'>Number of Tees (branch flow): </label>
-			<input  class='fittings' min='0' type='number' id='teeBranch' name='teeBranch' value=0> 
+				<label for='teeBranch'>Number of Tees (branch flow): </label>
+					<input  class='fittings' min='0' type='number' id='teeBranch' name='teeBranch' value=0> 
   	  
-			<label for='swingCheck'>Number of swing check valves: </label>
-			<input class='fittings' min='0'  type='number' id='swingCheck' name='swingCheck' value=0>
+				<label for='swingCheck'>Number of swing check valves: </label>
+					<input class='fittings' min='0'  type='number' id='swingCheck' name='swingCheck' value=0>
 
-			<label for='gateValve'>Number of Gate Valves: </label>
-			<input class='fittings'  min='0' type='number' id='gateValve' name='gateValve' value=0>
+				<label for='gateValve'>Number of Gate Valves: </label>
+					<input class='fittings'  min='0' type='number' id='gateValve' name='gateValve' value=0>
 			</div>
-
-	<br>
-	
-		<div id='lengthsOutputs'>
-	<div class='calculation'><div id='tdhoutput'><span>TDH: </span><span id='tdhResult'></span></div></div>
-		<div class="continue"><button class='continueButton' id='toBasin'>Continue</button></div></div>
-		
-		
-
-</div>
+		<br>
+			<div id='lengthsOutputs'>
+				<div class='calculation'><div id='tdhoutput'><span>TDH: </span><span id='tdhResult'></span></div>
+			</div>
+				<div class="continue"><button class='continueButton' id='toBasin'>Continue</button></div>
+			</div>
+		</div>
+			
+			
+<div id='graphContainer' class='hidden'><div id='myPlot'style="" ></div><div class='continue'><button class='continueButton' onclick='location.reload()'>Start Over</button></div></div>
 <div id='basinStuff' class='hidden'>
 		<div class = 'recommendedBasins'>
-			<div><span  id='gpmValue3'></span><span> GPM</span></div><br>
-			<div><span id='TDHOutput3'></span> <span> TDH</span></div><br><span id='recommendedBasins'>Fittings from pump to Discharge in Selected size</span></div><br>
-			<div class='continue'><button class='continueButton' onclick='location.reload()'>Start Over</button></div><br>
+			<div id='textOutputs'>
+			<table>
+					<tr>
+						<th>GPM</th>
+						<th>TDH</th>
+					</tr>
+					<tr>
+						<td id='gpm/3'></td>
+						<td id='gpm/3TDH'></td>
+					</tr>
+					<tr>
+						<td id='gpm/2'></td>
+						<td id='gpm/2TDH'></td>
+					</tr>
+					<tr>
+						<td id='gpmTable'></td>
+						<td id='gpmTableTDH'></td>
+					</tr>
+					<tr>
+						<td id='gpm1.5'></td>
+						<td id='gpm1.5TDH'></td>
+					</tr>
+					<tr>
+						<td id='gpm2'></td>
+						<td id='gpm2TDH'></td>
+					</tr>
+				</table>
+				
+				<div id='resultsDiv'>
+					<div><span style="color:red">*</span><span>Flow (GPM): </span><span  id='gpmValue3'></span></div>
+					<div><span style="color:red">*</span><span>TDH (ft): </span><span id='TDHOutput3'></span></div><br><div class='hidden' id='recommendedBasins'></div></div></div></div><br>
+<br>			</div>
 		</div>
+
 </div>
 
 
@@ -587,7 +765,7 @@
 		<div class="footer-left">&copy; 2024 SSPMA. All Rights Reserved.</div>
 		<div class="footer-right">Terms of Service</div>
     </div>
-	
+<script src="plotly.js"></script>
 <script>
 
 	document.getElementById('startButton').addEventListener('click', function()  {
@@ -601,19 +779,25 @@
 	document.getElementById('home').addEventListener('click', function() {
 	location.reload()
 	});
+
 	
 document.getElementById('toGPM').addEventListener('click', function() {
-	document.getElementById('TDHButton').classList.add('status-button');
-	document.getElementById('TDHButton').classList.remove('inactive-button');
 fixtureUnits();
-	document.getElementById('fixtureSelector').classList.add('hidden');
-	document.getElementById('gpmStuff').classList.remove('hidden');
 	//document.getElementById('GPM').classList.remove('hidden');
 	recommendedGPM = (1.851732392 * Math.pow(totalUnits, .6884906927))
 	recommendedGPM10 = Math.round((1.851732392 * Math.pow(totalUnits, .6884906927))/10)*10;
 	recommendedGPM25 = Math.round((1.851732392 * Math.pow(totalUnits, .6884906927))/25)*25;
 	recommendedGPM5 = Math.round((1.851732392 * Math.pow(totalUnits, .6884906927))*2)/2;
 	document.getElementById('gpmValue').value = recommendedGPM5;
+	if (totalUnits === 0 && recommendedGPM === 0) {
+		alert('Please enter fixture units');
+		}else {
+			document.getElementById('TDHButton').classList.add('status-button');
+	document.getElementById('TDHButton').classList.remove('inactive-button');
+fixtureUnits();
+	document.getElementById('fixtureSelector').classList.add('hidden');
+	document.getElementById('gpmStuff').classList.remove('hidden');
+	}
 	//document.getElementById('fixtureValue').innerHTML = totalUnits;
 	
 /*	if (recommendedGPM > 100) {
@@ -756,6 +940,26 @@ function fixtureUnits() {
 	unlisted4 = document.getElementById('unlisted4').value;
 	unlisted5 = document.getElementById('unlisted5').value;
 	brGroup = document.getElementById('brGroup').value;
+	shGroup = document.getElementById('shGroup').value;
+	shower = document.getElementById('shower').value;
+	ltray = document.getElementById('ltray').value;
+	lav = document.getElementById('lav').value;
+	ksinkdisp = document.getElementById('ksinkdisp').value;
+	ksink = document.getElementById('ksink').value;
+	dwasher = document.getElementById('dwasher').value;
+	fountain = document.getElementById('fountain').value;
+	bidet = document.getElementById('bidet').value;
+	bathtub1 = document.getElementById('bathtub1').value;
+	bathtub2 = document.getElementById('bathtub2').value;
+	sinkServ = document.getElementById('sinkServ').value;
+	sinkScul = document.getElementById('sinkScul').value;
+	sinkSurg = document.getElementById('sinkSurg').value;
+	swim = document.getElementById('swim').value;
+	urinal = document.getElementById('urinal').value;
+	washing = document.getElementById('washing').value;
+	waterCloset = document.getElementById('waterCloset').value;
+	waterSoft = document.getElementById('waterSoft').value;
+	
 console.log(unlisted5);
 	unlisted1Units = unlisted1 * 2;
 	unlisted2Units = unlisted2 * 3;
@@ -763,8 +967,27 @@ console.log(unlisted5);
 	unlisted4Units = unlisted4 * 5;
 	unlisted5Units = unlisted5 * 6;
 	brGroupUnits = brGroup * 6;
+	shGroupUnits = shGroup * 3;
+	showerUnits = shower * 2;
+	ltrayUnits = ltray * 2;
+	dispUnits = ksinkdisp * 3;
+	ksinkUnits = ksink * 2;
+	dwasherUnits = dwasher * 2;
+	bidetUnits = bidet * 3;
+	bathtub1Units = bathtub1 * 2;
+	bathtub2Units = bathtub2 * 3;
+	sinkServUnits = sinkServ * 3;
+	sinkSculUnits = sinkScul * 4;
+	sinkSurgUnits = sinkSurg * 3;
+	swimUnits = swim;
+	urinalUnits = urinal * 4;
+	washingUnits = washing * 2;
+	waterClosetUnits = waterCloset * 3
+	waterSoftUnits = waterSoft * 4
 console.log(unlisted5Units);
-	totalUnits = +unlisted1Units + +unlisted2Units + +unlisted3Units + +unlisted4Units + +unlisted5Units + +brGroupUnits;
+	totalUnits = +unlisted1Units + +unlisted2Units + +unlisted3Units + +unlisted4Units + +unlisted5Units + +brGroupUnits + +shGroup + +showerUnits +
+	+ltray + +lav + +dispUnits + +ksinkUnits + +dwasherUnits + +fountain + +bidetUnits + +bathtub1Units + +bathtub2Units + +sinkServUnits + +sinkSculUnits +
+	+sinkSurgUnits + +swim + +urinalUnits + +washingUnits + +waterClosetUnits + +waterSoftUnits;
 console.log(totalUnits);
 	recommendedGPM = (1.851732392 * Math.pow(totalUnits, .6884906927))
 	recommendedGPM10 = Math.round((1.851732392 * Math.pow(totalUnits, .6884906927))/10)*10;
@@ -851,13 +1074,24 @@ if (nompipe === '3') {
 	document.getElementById('fixtureSelector').classList.remove('hidden');
 	document.getElementById('GPM').classList.add('hidden');
 	});*/
+	
+
+	
+	
 document.getElementById('toBasin').addEventListener('click', function() {
-	document.getElementById('gpmStuff').classList.add('hidden');
+straightpipeCheck = document.getElementById('StraightPipe').value
+console.log(straightpipeCheck);
+if (straightpipeCheck == 0) {
+	alert('Please enter a value for straight pipe')
+	}else if (straightpipeCheck > 0){
+		document.getElementById('gpmStuff').classList.add('hidden');
 	document.getElementById('basinStuff').classList.remove('hidden');
 	document.getElementById('basinSizeButton').classList.remove('hidden');
 	document.getElementById('basinSizeButton').classList.add('status-button');
-	document.getElementById('gpmValue3').innerHTML = recommendedGPM5;
-	document.getElementById('TDHOutput3').innerHTML = Math.round(tdhResult);
+	document.getElementById('mainContainer').style.flexDirection = 'row';
+	document.getElementById('gpmValue3').innerHTML = Math.round(recommendedGPM*10)/10;
+	document.getElementById('TDHOutput3').innerHTML = Math.round(tdhResult*10)/10;
+	document.getElementById('graphContainer').classList.remove('hidden');
 	if (recommendedGPM <= 35) {
 		document.getElementById('recommendedBasins').innerHTML = '18" - 48" Basin Recommended'
 	}
@@ -876,7 +1110,130 @@ document.getElementById('toBasin').addEventListener('click', function() {
 	if (recommendedGPM > 250) {
 		document.getElementById('recommendedBasins').innerHTML = '48" Basin Recommended'
 	}
-	});
+let exp = "(2.31 * ((4.52 * totalStraightPipe * Math.pow(x, 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87)))) + +staticHead";
+thirdGpm = document.getElementById('gpm/3');
+halfGpm = document.getElementById('gpm/2');
+gpmTable = document.getElementById('gpmTable');
+gpmTimeandhalf = document.getElementById('gpm1.5');
+gpmdouble = document.getElementById('gpm2');
+
+thirdTDH = document.getElementById('gpm/3TDH');
+halfTDH = document.getElementById('gpm/2TDH');
+gpmTableTDH = document.getElementById('gpmTableTDH');
+timeAndhalfTDH = document.getElementById('gpm1.5TDH');
+doubleTDH = document.getElementById('gpm2TDH');
+
+thirdGpm.innerHTML = `${Math.round((recommendedGPM/3)*10)/10}`;
+halfGpm.innerHTML = `${Math.round((recommendedGPM/2)*10)/10}`;
+gpmTable.innerHTML = `${Math.round((recommendedGPM)*10)/10}`;
+gpmTimeandhalf.innerHTML = `${Math.round(((recommendedGPM*3)/2)*10)/10}`;
+gpmdouble.innerHTML = `${Math.round((recommendedGPM*2)*10)/10}`;
+
+thirdTDH.innerHTML = `${Math.round(((2.31 * ((4.52 * totalStraightPipe * Math.pow((recommendedGPM/3), 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87)))) + +staticHead)*10)/10}`
+halfTDH.innerHTML = `${Math.round(((2.31 * ((4.52 * totalStraightPipe * Math.pow((recommendedGPM/2), 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87)))) + +staticHead)*10)/10}`
+gpmTableTDH.innerHTML = `${Math.round(((2.31 * ((4.52 * totalStraightPipe * Math.pow((recommendedGPM), 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87)))) + +staticHead)*10)/10}`
+timeAndhalfTDH.innerHTML = `${Math.round(((2.31 * ((4.52 * totalStraightPipe * Math.pow((recommendedGPM*3/2), 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87)))) + +staticHead)*10)/10}`
+doubleTDH.innerHTML = `${Math.round(((2.31 * ((4.52 * totalStraightPipe * Math.pow((recommendedGPM*2), 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87)))) + +staticHead)*10)/10}`
+
+const xValues = [];
+const yValues = [];
+for (let x = 0; x <= recommendedGPM5*2; x += 1) {
+  xValues.push(x);
+  yValues.push(eval(exp));
+}
+const data = [{x:xValues, y:yValues, mode:'lines'}];
+var layout = {
+  autosize: false,
+  width: 700,
+  height: 500,
+    paper_bgcolor: 'rgba(245, 245, 245, 1)',
+    plot_bgcolor: 'rgba(245, 245, 245, 1)',
+  margin: {
+    l: 100,
+    r: 50,
+    b: 100,
+    t: 100,
+    pad: 4,
+
+  },
+  title: {
+    text:`<b>System Curve <br><sup>(${document.getElementById('recommendedBasins').innerHTML})</sup></b>`,
+    font: {
+      family: 'bahnschrift, monospace',
+      size: 24
+    },
+    xref: 'paper',
+    x: 0.5,
+	xanchor: 'center'
+  },
+  xaxis: {
+    title: {
+      text: 'Flow (GPM)',
+      font: {
+        family: 'bahnschrift, monospace',
+        size: 18,
+        color: '#7f7f7f'
+		
+      }
+    },
+	gridcolor: "rgba(0,0,0,.65)",
+  },
+  yaxis: {
+    title: {
+      text: "Total Dynamic Head (ft)",
+      font: {
+        family: 'bahnschrift, monospace',
+        size: 18,
+        color: '#7f7f7f'
+      }
+    },
+	gridcolor: "rgba(0,0,0,.65)",
+	rangemode: 'normal',
+  },
+
+	shapes: [
+	{
+        type: 'line',
+        x0: recommendedGPM,
+        y0: 0,
+        x1: recommendedGPM,
+        y1: 2.31 * ((4.52 * totalStraightPipe * Math.pow(recommendedGPM, 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87))) + +staticHead,
+        line:{
+            color: 'rgba(200, 0, 0, 100)',
+            width: 4,
+            dash:'dot'
+        
+	}
+	},
+	{	
+        type: 'line',
+        x0: 0,
+        y0: 2.31 * ((4.52 * totalStraightPipe * Math.pow(recommendedGPM, 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87))) + +staticHead,
+        x1: recommendedGPM,
+        y1: 2.31 * ((4.52 * totalStraightPipe * Math.pow(recommendedGPM, 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87))) + +staticHead,
+        line:{
+            color: 'rgba(200, 0, 0, 100)',
+            width: 4,
+            dash:'dot'
+        }
+    }
+	]
+	}
+
+document.getElementById('printButton').addEventListener('click', () => {
+
+Plotly.downloadImage('myPlot', {format: 'png', width: 800, height: 600, filename: 'SystemCurve'});
+});		
+	Plotly.newPlot('myPlot',data,layout)
+	
+	}});
+	
+
+
+
+	
+
+
 	
 </script>
 	
