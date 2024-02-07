@@ -1054,8 +1054,8 @@ fixtures.forEach(function(fixture) {
 	});
 const fittings = document.querySelectorAll('.fittings');
 
-fittings.forEach(function(fitting) {
-	fitting.addEventListener('change', function() {
+
+function tdhCalc() {
 		StraightPipe = document.getElementById('StraightPipe').value;
 matpipe = document.getElementById('matPipe').value;
 if (matpipe === 'PVC') {
@@ -1120,7 +1120,12 @@ if (nompipe === '3') {
 	tdhResult = +staticHead + +headLoss;
 	//document.getElementById('headLossResult').innerHTML = Math.round(headLoss);
 	document.getElementById('tdhResult').innerHTML = Math.round(tdhResult);
+	}
 	
+	
+fittings.forEach(function(fitting) {
+	fitting.addEventListener('change', function() {
+		tdhCalc();
 	if (recommendedGPM < scouringVel) {
 		document.getElementById('scouringNote').classList.remove('hidden');
 		document.getElementById('scouring').textContent = ' ' + scouringVel + ' ';
@@ -1141,6 +1146,7 @@ if (nompipe === '3') {
 	
 	
 document.getElementById('toBasin').addEventListener('click', function() {
+	tdhCalc();
 straightpipeCheck = document.getElementById('StraightPipe').value
 console.log(straightpipeCheck);
 if (straightpipeCheck == 0) {
@@ -1152,7 +1158,6 @@ if (straightpipeCheck == 0) {
 	document.getElementById('basinSizeButton').classList.add('status-button');
 	document.getElementById('mainContainer').style.flexDirection = 'row';
 	document.getElementById('gpmValue3').innerHTML = Math.round(recommendedGPM*10)/10;
-	document.getElementById('TDHOutput3').innerHTML = Math.round(tdhResult*10)/10;
 	document.getElementById('graphContainer').classList.remove('hidden');
 	if (recommendedGPM <= 35) {
 		document.getElementById('recommendedBasins').innerHTML = '18" - 48" Basin Recommended'
@@ -1190,7 +1195,7 @@ halfGpm.innerHTML = `${Math.round((recommendedGPM/2)*10)/10}`;
 gpmTable.innerHTML = `${Math.round((recommendedGPM)*10)/10}`;
 gpmTimeandhalf.innerHTML = `${Math.round(((recommendedGPM*3)/2)*10)/10}`;
 gpmdouble.innerHTML = `${Math.round((recommendedGPM*2)*10)/10}`;
-
+	document.getElementById('TDHOutput3').innerHTML = Math.round(tdhResult*10)/10;
 thirdTDH.innerHTML = `${Math.round(((2.31 * ((4.52 * totalStraightPipe * Math.pow((recommendedGPM/3), 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87)))) + +staticHead)*10)/10}`
 halfTDH.innerHTML = `${Math.round(((2.31 * ((4.52 * totalStraightPipe * Math.pow((recommendedGPM/2), 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87)))) + +staticHead)*10)/10}`
 gpmTableTDH.innerHTML = `${Math.round(((2.31 * ((4.52 * totalStraightPipe * Math.pow((recommendedGPM), 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87)))) + +staticHead)*10)/10}`
