@@ -672,6 +672,7 @@
 					<option id='2inch' selected value="2">2"</option>
 					<option id='2.5inch' value="2.5">2-1/2"</option>
 					<option id='3inch' value="3">3"</option>
+					<option id='4inch' value="4">4"</option>
 				</select>
 				
 
@@ -1102,6 +1103,15 @@ nompipe = document.getElementById('nomPipe').value;
 		swingCheck = 25.5 * swingCheck;
 		gateValvePipe = 2.0 * gateValve;
 		scouringVel = 46
+		break;
+		case '4':
+		el90Pipe = el90 * 14;
+		el45Pipe = 8 * el45;
+		teeThruPipe = 6 * teeThru;
+		teeBranchPipe = 22 * teeBranch;
+		swingCheck = 33 * swingCheck;
+		gateValvePipe = 4 * gateValve;
+		scouringVel = 79
 		}
 if (nompipe === '2') {
 	pipeID = 1.939;
@@ -1111,7 +1121,10 @@ if (nompipe === '2.5') {
 	}
 if (nompipe === '3') {
 	pipeID = 3.068;
-	}	
+	}
+if (nompipe === '4') {
+	pipeID = 3.826;
+	}		
 	totalStraightPipe = +StraightPipe + +el90Pipe + + el45Pipe + +teeThruPipe + +teeBranchPipe + +swingCheck + +gateValvePipe
 	//totalPipe.innerHTML = Math.round(totalStraightPipe);
 	headLoss = 2.31 * ((4.52 * totalStraightPipe * Math.pow(recommendedGPM, 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87)));
@@ -1204,7 +1217,7 @@ doubleTDH.innerHTML = `${Math.round(((2.31 * ((4.52 * totalStraightPipe * Math.p
 
 const xValues = [];
 const yValues = [];
-for (let x = 0; x <= recommendedGPM5*2; x += 1) {
+for (let x = scouringVel; x <= recommendedGPM5*2; x += 1) {
   xValues.push(x);
   yValues.push(eval(exp));
 }
