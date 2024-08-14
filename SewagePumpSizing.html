@@ -525,7 +525,7 @@
     <div class="nav-bar">
    
 			<div class="navbar-right">
-				<a id='printButton' href="#">Print</a>
+				<a id='printButton' style='display:none;' href="#">Print</a>
 				<a href="#">Help</a>
 			</div>
 	</div>
@@ -684,7 +684,7 @@
 					<option selected value="PVC">PVC</option>
 					<option value="Steel">Steel</option>
 				</select>
-			<label for="StaticHead">Static Head (ft):</label>
+			<label for="StaticHead"><span style="color:red">*</span>Static Head (ft):</label>
 				<input class='fittings' min='0'  type="number" id="StaticHead" name="StaticHead" value='0'>
     	</div>
 		
@@ -830,9 +830,11 @@ nompipe = document.getElementById('nomPipe').value;
 		document.getElementById('scouringNote').classList.remove('hidden');
 		document.getElementById('scouring').textContent = ' ' + scouringVel + ' ';
 		document.getElementById('gpmValue').style.border = '3px solid red';
+        document.getElementById('gpmValue').value = scouringVel;
 		} else {
 		document.getElementById('scouringNote').classList.add('hidden');
 		document.getElementById('gpmValue').style.border = '0px solid red';
+         document.getElementById('gpmValue').value = recommendedGPM5;
 		}
 
 	//document.getElementById('GPM').classList.remove('hidden');
@@ -840,7 +842,6 @@ nompipe = document.getElementById('nomPipe').value;
 	recommendedGPM10 = Math.round((1.851732392 * Math.pow(totalUnits, .6884906927))/10)*10;
 	recommendedGPM25 = Math.round((1.851732392 * Math.pow(totalUnits, .6884906927))/25)*25;
 	recommendedGPM5 = Math.round((1.851732392 * Math.pow(totalUnits, .6884906927))*2)/2;
-	document.getElementById('gpmValue').value = recommendedGPM5;
 	if (totalUnits === 0 && recommendedGPM === 0) {
 		alert('Please enter fixture units');
 		}else {
@@ -1143,9 +1144,11 @@ fittings.forEach(function(fitting) {
 		document.getElementById('scouringNote').classList.remove('hidden');
 		document.getElementById('scouring').textContent = ' ' + scouringVel + ' ';
 		document.getElementById('gpmValue').style.border = '3px solid red';
+		document.getElementById('gpmValue').value = scouringVel;
 		} else {
 		document.getElementById('scouringNote').classList.add('hidden');
 		document.getElementById('gpmValue').style.border = '0px solid red';
+        document.getElementById('gpmValue').value = recommendedGPM5;
 		}
 	});
 	});
@@ -1160,17 +1163,20 @@ fittings.forEach(function(fitting) {
 	
 document.getElementById('toBasin').addEventListener('click', function() {
 	tdhCalc();
+document.getElementById("printButton").style.display = "block";
 straightpipeCheck = document.getElementById('StraightPipe').value
+staticHeadCheck = document.getElementById('StaticHead').value
 console.log(straightpipeCheck);
-if (straightpipeCheck == 0) {
-	alert('Please enter a value for straight pipe')
-	}else if (straightpipeCheck > 0){
+if (straightpipeCheck == 0 || staticHeadCheck == 0) {
+	alert('Please enter a value for straight pipe and static head')
+	}else if (straightpipeCheck > 0 && staticHeadCheck > 0){
+      
 		document.getElementById('gpmStuff').classList.add('hidden');
 	document.getElementById('basinStuff').classList.remove('hidden');
 	document.getElementById('basinSizeButton').classList.remove('hidden');
 	document.getElementById('basinSizeButton').classList.add('status-button');
 	document.getElementById('mainContainer').style.flexDirection = 'row';
-	document.getElementById('gpmValue3').innerHTML = Math.round(recommendedGPM*10)/10;
+
 	document.getElementById('graphContainer').classList.remove('hidden');
 	if (recommendedGPM <= 35) {
 		document.getElementById('recommendedBasins').innerHTML = '18" - 48" Basin Recommended'
@@ -1202,7 +1208,8 @@ halfTDH = document.getElementById('gpm/2TDH');
 gpmTableTDH = document.getElementById('gpmTableTDH');
 timeAndhalfTDH = document.getElementById('gpm1.5TDH');
 doubleTDH = document.getElementById('gpm2TDH');
-
+if (recommendedGPM > scouringVel) {
+  	document.getElementById('gpmValue3').innerHTML = Math.round(recommendedGPM*10)/10;
 thirdGpm.innerHTML = `${Math.round((recommendedGPM/3)*10)/10}`;
 halfGpm.innerHTML = `${Math.round((recommendedGPM/2)*10)/10}`;
 gpmTable.innerHTML = `${Math.round((recommendedGPM)*10)/10}`;
@@ -1214,10 +1221,38 @@ halfTDH.innerHTML = `${Math.round(((2.31 * ((4.52 * totalStraightPipe * Math.pow
 gpmTableTDH.innerHTML = `${Math.round(((2.31 * ((4.52 * totalStraightPipe * Math.pow((recommendedGPM), 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87)))) + +staticHead)*10)/10}`
 timeAndhalfTDH.innerHTML = `${Math.round(((2.31 * ((4.52 * totalStraightPipe * Math.pow((recommendedGPM*3/2), 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87)))) + +staticHead)*10)/10}`
 doubleTDH.innerHTML = `${Math.round(((2.31 * ((4.52 * totalStraightPipe * Math.pow((recommendedGPM*2), 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87)))) + +staticHead)*10)/10}`
-
+} else {
+  	document.getElementById('gpmValue3').innerHTML = Math.round(scouringVel*10)/10;
+  thirdGpm.innerHTML = `${Math.round((scouringVel/3)*10)/10}`;
+halfGpm.innerHTML = `${Math.round((scouringVel/2)*10)/10}`;
+gpmTable.innerHTML = `${Math.round((scouringVel)*10)/10}`;
+gpmTimeandhalf.innerHTML = `${Math.round(((scouringVel*3)/2)*10)/10}`;
+gpmdouble.innerHTML = `${Math.round((scouringVel*2)*10)/10}`;
+document.getElementById('TDHOutput3').innerHTML = `${Math.round(((2.31 * ((4.52 * totalStraightPipe * Math.pow((scouringVel), 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87)))) + +staticHead)*10)/10}`
+thirdTDH.innerHTML = `${Math.round(((2.31 * ((4.52 * totalStraightPipe * Math.pow((scouringVel/3), 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87)))) + +staticHead)*10)/10}`
+halfTDH.innerHTML = `${Math.round(((2.31 * ((4.52 * totalStraightPipe * Math.pow((scouringVel/2), 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87)))) + +staticHead)*10)/10}`
+gpmTableTDH.innerHTML = `${Math.round(((2.31 * ((4.52 * totalStraightPipe * Math.pow((scouringVel), 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87)))) + +staticHead)*10)/10}`
+timeAndhalfTDH.innerHTML = `${Math.round(((2.31 * ((4.52 * totalStraightPipe * Math.pow((scouringVel*3/2), 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87)))) + +staticHead)*10)/10}`
+doubleTDH.innerHTML = `${Math.round(((2.31 * ((4.52 * totalStraightPipe * Math.pow((scouringVel*2), 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87)))) + +staticHead)*10)/10}`
+}
 const xValues = [];
 const yValues = [];
-for (let x = scouringVel; x <= recommendedGPM5*2; x += 1) {
+      if (recommendedGPM < scouringVel) {
+        	graphEnd = scouringVel*3
+        	y0x0 = scouringVel
+            x0x1x1 = scouringVel
+            y1y0y1 = scouringVel
+      } else {
+        	graphEnd = recommendedGPM5*2
+            y0x0 = 0
+            x0x1x1 = recommendedGPM
+            y1y0y1 = 2.31 * ((4.52 * totalStraightPipe * Math.pow(recommendedGPM, 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87))) + +staticHead;
+      }
+  const yMax = 2.31 * ((4.52 * totalStraightPipe * Math.pow(graphEnd, 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87))) + +staticHead
+  const yMaxDouble = yMax * 2
+  const yStart =  2.31 * ((4.52 * totalStraightPipe * Math.pow(scouringVel, 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87))) + +staticHead
+  console.log(yMax);   
+for (let x = scouringVel; x <= graphEnd; x += 1) {
   xValues.push(x);
   yValues.push(eval(exp));
 }
@@ -1243,8 +1278,8 @@ var layout = {
       size: 24
     },
     xref: 'paper',
-    x: 0.5,
-	xanchor: 'center'
+    yanchor: 'center',
+	xanchor: 'center',
   },
   xaxis: {
     title: {
@@ -1268,16 +1303,17 @@ var layout = {
       }
     },
 	gridcolor: "rgba(0,0,0,.65)",
-	rangemode: 'normal',
+    range: [yStart, yMax],
   },
-
+ 
 	shapes: [
+
 	{
         type: 'line',
-        x0: recommendedGPM,
-        y0: 0,
-        x1: recommendedGPM,
-        y1: 2.31 * ((4.52 * totalStraightPipe * Math.pow(recommendedGPM, 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87))) + +staticHead,
+        x0: x0x1x1,
+        y0: y0x0,
+        x1: x0x1x1,
+        y1: y1y0y1,
         line:{
             color: 'rgba(200, 0, 0, 100)',
             width: 4,
@@ -1287,17 +1323,19 @@ var layout = {
 	},
 	{	
         type: 'line',
-        x0: 0,
-        y0: 2.31 * ((4.52 * totalStraightPipe * Math.pow(recommendedGPM, 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87))) + +staticHead,
-        x1: recommendedGPM,
-        y1: 2.31 * ((4.52 * totalStraightPipe * Math.pow(recommendedGPM, 1.852))/(Math.pow(cFactor, 1.852) * Math.pow(pipeID, 4.87))) + +staticHead,
+        x0: y0x0,
+        y0: y1y0y1,
+        x1: x0x1x1,
+        y1: y1y0y1,
         line:{
             color: 'rgba(200, 0, 0, 100)',
             width: 4,
             dash:'dot'
         }
     }
+
 	]
+      
 	}
 
 document.getElementById('printButton').addEventListener('click', () => {
